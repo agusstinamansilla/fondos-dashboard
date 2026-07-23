@@ -143,6 +143,7 @@ def actualizar_historico(nuevas_filas: pd.DataFrame):
     combinado = combinado.drop_duplicates(subset=["fondo", "fecha"], keep="last")
     combinado = combinado.sort_values(["fondo", "fecha"])
 
+    combinado["vcp"] = combinado["vcp"].round(6)
     combinado.to_csv(HISTORICO_CSV, index=False)
 
     agregadas = len(combinado) - len(historico)
