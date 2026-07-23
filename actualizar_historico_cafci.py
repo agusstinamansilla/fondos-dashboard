@@ -111,7 +111,7 @@ def extraer_fondos_de_interes(df: pd.DataFrame) -> pd.DataFrame:
             filas.append({
                 "fondo": nombre_original,
                 "fecha": row[COL_FECHA],
-                "vcp": row[COL_VCP],
+                "vcp": row[COL_VCP]/1000,
             })
             encontrados.add(nombre_original)
 
