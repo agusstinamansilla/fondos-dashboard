@@ -131,7 +131,7 @@ def actualizar_historico(nuevas_filas: pd.DataFrame):
         print("No se encontraron filas de los fondos de interes en la planilla de hoy. No se actualiza nada.")
         return
 
-    nuevas_filas["fecha"] = pd.to_datetime(nuevas_filas["fecha"]).dt.date
+    nuevas_filas["fecha"] = pd.to_datetime(nuevas_filas["fecha"], format="mixed").dt.date
 
     if HISTORICO_CSV.exists():
         historico = pd.read_csv(HISTORICO_CSV, parse_dates=["fecha"])
