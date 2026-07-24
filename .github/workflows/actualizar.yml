@@ -2,9 +2,9 @@ name: Actualizar historico VCP FCI
 
 on:
   schedule:
-    # Corre todos los dias a las 22:00 UTC = 19:00 hora Argentina
+    # Corre todos los dias a las 12:00 UTC = 09:00 hora Argentina
     # (despues del cierre de mercado, cuando CAFCI ya publico la planilla del dia)
-    - cron: "0 22 * * 1-5"
+    - cron: "0 12 * * 1-5"
   workflow_dispatch: {}  # permite tambien correrlo a mano desde la pestaña "Actions" de GitHub, por si hace falta
 
 permissions:
