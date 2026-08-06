@@ -1,0 +1,36 @@
+name: Actualizar MEP/CCL implicito
+
+on:
+  schedule:
+    # Corre todos los dias a las 12:05 UTC = 09:05 hora Argentina
+    # (5 minutos despues del script de fondos, para no chocar los pushes)
+    - cron: "5 12 * * 1-5"
+  workflow_dispatch: {}  # permite correrlo a mano desde la pestaña "Actions"
+
+permissions:
+  contents: write
+
+jobs:
+  actualizar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar el repo
+        uses: actions/checkout@v4
+      - name: Instalar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Instalar dependencias
+        run: pip install pandas ppi_client
+      - name: Correr script de actualizacion MEP/CCL
+        env:
+          PPI_API_KEY_PUBLICA: ${{ secrets.PPI_API_KEY_PUBLICA }}
+          PPI_API_KEY_PRIVADA: ${{ secrets.PPI_API_KEY_PRIVADA }}
+        run: python actualizar_mep_ccl.py
+      - name: Comitear mep_ccl_historico.csv actualizado (si hubo cambios)
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add mep_ccl_historico.csv
+          git diff --staged --quiet || git commit -m "Actualizar MEP/CCL - $(date +'%Y-%m-%d')"
+          git push
