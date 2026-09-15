@@ -16,6 +16,7 @@ const ITEMS_PESOS = [
   { name: "Galileo Ahorro Plus - Clase A", color: "#FB7185", moneda: "pesos" },
   { name: "Galileo Income - Clase A", color: "#EAB308", moneda: "pesos" },
   { name: "Max Dinamico II - Clase A", color: "#84CC16", moneda: "pesos" },
+  { name: "Gainvest Balanceado - Clase A", color: "#0EA5E9", moneda: "pesos" },
   { name: "Plazo fijo (indice, TNA diaria)", color: "#A3E635", moneda: "pesos" },
   { name: "Inflacion (indice acumulado)", color: "#F97316", moneda: "pesos" },
 ];
@@ -30,6 +31,7 @@ const ITEMS_DOLARES = [
   { name: "Galileo Multi Strategy - Clase A", color: "#60A5FA", moneda: "dolares" },
   { name: "Parakeet MM Investments Fund - Clase B", color: "#FDBA74", moneda: "dolares" },
   { name: "Parakeet MM Investments Fund - Clase A", color: "#FB923C", moneda: "dolares" },
+  { name: "Parakeet Global - Clase A", color: "#C084FC", moneda: "dolares" },
   { name: "Dolar MEP implicito (AL30/AL30D)", color: "#22D3EE", moneda: "dolares" },
   { name: "Dolar CCL implicito (AL30/AL30C)", color: "#F87171", moneda: "dolares" },
 ];
