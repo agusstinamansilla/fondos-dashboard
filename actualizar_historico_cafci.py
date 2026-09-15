@@ -67,6 +67,8 @@ FONDOS_DE_INTERES = [
     "Parakeet MM Investments Fund - Clase B",
     "Parakeet MM Investments Fund - Clase A",
     "Max Dinamico II - Clase A",
+    "Gainvest Balanceado - Clase A",
+    "Parakeet Global - Clase A",
 ]
 
 # Columnas en la planilla (0-indexado)
