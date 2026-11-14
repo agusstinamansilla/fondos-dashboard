@@ -38,6 +38,7 @@ Requisitos:
 """
 
 import re
+import sys
 import unicodedata
 from datetime import datetime
 from pathlib import Path
@@ -138,7 +139,7 @@ def obtener_fecha_comparacion(df: pd.DataFrame):
         return None
 
 
-def extraer_fondos_de_interes(df: pd.DataFrame) -> pd.DataFrame:
+def extraer_fondos_de_interes(df: pd.DataFrame) -> tuple[pd.DataFrame, set]:
     objetivo_normalizado = {normalizar(n): n for n in FONDOS_DE_INTERES}
     objetivo_normalizado.update({normalizar(a): n for a, n in ALIAS_NOMBRES.items()})
     fecha_comparacion = obtener_fecha_comparacion(df)
@@ -184,7 +185,7 @@ def extraer_fondos_de_interes(df: pd.DataFrame) -> pd.DataFrame:
         print("(puede ser que ese fondo no haya operado ese dia, o que el "
               "nombre en la planilla cambio un poco - revisar manualmente)")
 
-    return pd.DataFrame(filas)
+    return pd.DataFrame(filas), faltantes
 
 
 def actualizar_historico(nuevas_filas: pd.DataFrame):
@@ -219,9 +220,16 @@ if __name__ == "__main__":
     df_planilla = descargar_planilla()
     print(f"Planilla descargada: {len(df_planilla)} filas totales")
 
-    df_interes = extraer_fondos_de_interes(df_planilla)
+    df_interes, faltantes = extraer_fondos_de_interes(df_planilla)
     print(f"Filas de fondos de interes encontradas hoy (actual + comparacion): {len(df_interes)}")
     if not df_interes.empty:
         print("Fechas encontradas:", sorted(df_interes["fecha"].astype(str).unique()))
 
     actualizar_historico(df_interes)
+
+    # Se guarda primero todo lo que se encontro y recien despues se sale con
+    # error, para que el workflow igual haga commit de los demas fondos y el
+    # job quede en rojo (asi un fondo faltante no pasa desapercibido).
+    if faltantes:
+        print(f"ERROR: faltaron {len(faltantes)} fondo(s) esperado(s) en la planilla de hoy.")
+        sys.exit(2)

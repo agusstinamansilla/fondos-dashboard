@@ -27,6 +27,10 @@ jobs:
         run: pip install pandas openpyxl requests
 
       - name: Correr script de actualizacion
+        id: script
+        # Si falta algun fondo el script guarda lo que encontro y sale con
+        # error; seguimos igual para comitear esas filas y fallamos al final.
+        continue-on-error: true
         run: python actualizar_historico_cafci.py
 
       - name: Comitear historico.csv actualizado (si hubo cambios)
@@ -36,3 +40,9 @@ jobs:
           git add historico.csv
           git diff --staged --quiet || git commit -m "Actualizar historico VCP - $(date +'%Y-%m-%d')"
           git push
+
+      - name: Fallar si el script reporto errores
+        if: steps.script.outcome == 'failure'
+        run: |
+          echo "::error::El script de actualizacion termino con error (fondos faltantes o fallo de descarga). Revisar el log del paso 'Correr script de actualizacion'."
+          exit 1
