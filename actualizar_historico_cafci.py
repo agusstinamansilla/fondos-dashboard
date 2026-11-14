@@ -71,6 +71,16 @@ FONDOS_DE_INTERES = [
     "Parakeet Global - Clase A",
 ]
 
+# Fondos que CAFCI renombro: nombre nuevo en la planilla -> nombre con el
+# que se guarda en historico.csv (para no cortar la serie del dashboard).
+# Desde el 05/11/26 los fondos Gainvest aparecen como "Stonex ...".
+ALIAS_NOMBRES = {
+    "Stonex FF - Clase A": "Gainvest FF - Clase A",
+    "Stonex Global I - Clase A": "Gainvest Global I - Clase A",
+    "Stonex Renta Fija Dolares - Clase A": "Gainvest Renta Fija Dolares - Clase A",
+    "Stonex Balanceado - Clase A": "Gainvest Balanceado - Clase A",
+}
+
 # Columnas en la planilla (0-indexado)
 COL_NOMBRE = 0
 COL_FECHA_ACTUAL = 4
@@ -130,6 +140,7 @@ def obtener_fecha_comparacion(df: pd.DataFrame):
 
 def extraer_fondos_de_interes(df: pd.DataFrame) -> pd.DataFrame:
     objetivo_normalizado = {normalizar(n): n for n in FONDOS_DE_INTERES}
+    objetivo_normalizado.update({normalizar(a): n for a, n in ALIAS_NOMBRES.items()})
     fecha_comparacion = obtener_fecha_comparacion(df)
 
     filas = []
